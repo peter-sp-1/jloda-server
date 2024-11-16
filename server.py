@@ -5,17 +5,33 @@ import os
 import subprocess
 import traceback
 import re
+import time
 
 ffmpeg_path = r"C:\Users\DELL\Downloads\ffmpeg-master-latest-win64-gpl\ffmpeg-master-latest-win64-gpl\bin\ffmpeg.exe"
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": ["http://localhost:5173", "https://d182-105-112-125-236.ngrok-free.app"]}})
+CORS(app, resources={r"/*": {"origins": ["http://localhost:5173", "https://70e9-102-91-102-175.ngrok-free.app"]}})
 
 DOWNLOAD_FOLDER = os.path.abspath('downloads')
 if not os.path.exists(DOWNLOAD_FOLDER):
     os.makedirs(DOWNLOAD_FOLDER)
 
+reserved_filenames = {
+    "CON", "AUX", "NUL", "PRN", "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9",
+    "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
+}
+
+
 def sanitize_filename(filename: str) -> str:
-    return re.sub(r'[<>:"/\\|?*]+', '', filename.encode("ascii", "ignore").decode())
+    filename = filename.strip()
+    filename = re.sub(r'[^\x00-\x7F]+', '_', filename)
+    filename = re.sub(r'[<>:"/\\|?*]', '_', filename)
+    filename_upper = filename.upper()
+    if filename_upper in reserved_filenames:
+        filename = f"{filename}_file"  # Add a suffix to avoid reserved name conflict
+    filename = filename[:255]
+    filename = re.sub(r'[\. ]+$', '', filename)
+    return filename
+
 
 def download_video_helper(video_url, user_chosen_directory):
     """Download video and return file path and sanitized title."""
@@ -83,6 +99,7 @@ def download_video():
     finally:
         if file_path and os.path.exists(file_path):
             try:
+                time.sleep(1)
                 os.remove(file_path)
                 print(f"Removed file: {file_path}")
             except Exception as cleanup_error:
