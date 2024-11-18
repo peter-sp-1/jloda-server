@@ -8,7 +8,7 @@ import webbrowser
 import requests
 
 app = Flask(__name__)
-# Configure CORS to allow requests from any origin
+# Configure CORS to allow requests from any origin pip freeze > requirements.txt
 CORS(app, resources={
     r"/*": {
         "origins": "*",
@@ -86,7 +86,7 @@ def download_video():
 def get_ngrok_url():
     try:
         # Get the ngrok tunnel information
-        response = requests.get('https://025d-105-112-231-67.ngrok-free.app')
+        response = requests.get('https://jloda-313c7c5b8809.herokuapp.com')
         tunnels = response.json()['tunnels']
         # Find the HTTPS tunnel
         for tunnel in tunnels:
@@ -97,4 +97,4 @@ def get_ngrok_url():
 
 if __name__ == '__main__':
     # Start Flask app
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
