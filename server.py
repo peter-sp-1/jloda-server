@@ -44,9 +44,12 @@ def download_video():
         
         ydl_opts = {
             'format': 'best[ext=mp4]',
-            'outtmpl': os.path.join(DOWNLOAD_DIR, '%(title)s.%(ext)s'),
-            'quiet': True,
-            'no_warnings': True,
+            'geo_bypass': True,  # Bypass geographical restrictions
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'add_headers': {
+                'Referer': 'https://www.youtube.com',
+                'Origin': 'https://www.youtube.com'
+            }
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
