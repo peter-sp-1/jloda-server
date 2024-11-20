@@ -93,7 +93,7 @@ def download_video():
 def get_ngrok_url():
     try:
         # Get the ngrok tunnel information
-        response = requests.get('https://8191-102-89-32-248.ngrok-free.app')
+        response = requests.get('https://jloda-server-0ccf03f71e0c.herokuapp.com')
         tunnels = response.json()['tunnels']
         # Find the HTTPS tunnel
         for tunnel in tunnels:
