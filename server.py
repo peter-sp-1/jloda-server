@@ -44,9 +44,12 @@ def download_video():
         
         ydl_opts = {
             'format': 'best[ext=mp4]',
-            'outtmpl': os.path.join(DOWNLOAD_DIR, '%(title)s.%(ext)s'),
-            'quiet': True,
-            'no_warnings': True,
+            'geo_bypass': True,  # Bypass geographical restrictions
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'add_headers': {
+                'Referer': 'https://www.youtube.com',
+                'Origin': 'https://www.youtube.com'
+            }
         }
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -93,7 +96,7 @@ def download_video():
 def get_ngrok_url():
     try:
         # Get the ngrok tunnel information
-        response = requests.get('https://8191-102-89-32-248.ngrok-free.app')
+        response = requests.get('https://jloda-server-0ccf03f71e0c.herokuapp.com')
         tunnels = response.json()['tunnels']
         # Find the HTTPS tunnel
         for tunnel in tunnels:
@@ -104,4 +107,4 @@ def get_ngrok_url():
 
 if __name__ == '__main__':
     # Start Flask app
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
