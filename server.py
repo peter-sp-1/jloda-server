@@ -8,14 +8,21 @@ import webbrowser
 import requests
 
 app = Flask(__name__)
-# Configure CORS to allow requests from any origin pip freeze > requirements.txt
+# Configure CORS to allow requests from any origin
 CORS(app, resources={
     r"/*": {
-        "origins": ["https://jloda.vercel.app", "http://localhost:3000"],
+        "origins": [
+            "https://jloda.vercel.app",
+            "http://localhost:3000"
+        ],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type"]
     }
 })
+
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"message": "YouTube Downloader API is running", "status": "active"})
 
 DOWNLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "downloads")
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
@@ -86,7 +93,7 @@ def download_video():
 def get_ngrok_url():
     try:
         # Get the ngrok tunnel information
-        response = requests.get('https://jloda-313c7c5b8809.herokuapp.com')
+        response = requests.get('https://8191-102-89-32-248.ngrok-free.app')
         tunnels = response.json()['tunnels']
         # Find the HTTPS tunnel
         for tunnel in tunnels:
@@ -97,4 +104,4 @@ def get_ngrok_url():
 
 if __name__ == '__main__':
     # Start Flask app
-    app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+    app.run(debug=True)
