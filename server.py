@@ -57,7 +57,7 @@ def download_video():
                 'Upgrade-Insecure-Requests': '1',
             },
             'sleep_requests': 2.0,
-            'proxy': 'http://your-proxy-address:port',  # Optional
+            # 'proxy': 'http://your-proxy-address:port',  # Optional
         }
 
 
