@@ -44,13 +44,22 @@ def download_video():
         
         ydl_opts = {
             'format': 'best[ext=mp4]',
-            'geo_bypass': True,  # Bypass geographical restrictions
-            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+            'noplaylist': True,
+            'geo_bypass': True,
+            'geo_bypass_country': 'US',
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/91.0.4472.124 Safari/537.36',
             'add_headers': {
                 'Referer': 'https://www.youtube.com',
-                'Origin': 'https://www.youtube.com'
-            }
+                'Origin': 'https://www.youtube.com',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Cache-Control': 'no-cache',
+                'Connection': 'keep-alive',
+                'Upgrade-Insecure-Requests': '1',
+            },
+            'sleep_requests': 2.0,
+            'proxy': 'http://your-proxy-address:port',  # Optional
         }
+
 
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
