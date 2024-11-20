@@ -11,11 +11,18 @@ app = Flask(__name__)
 # Configure CORS to allow requests from any origin
 CORS(app, resources={
     r"/*": {
-        "origins": "*",
+        "origins": [
+            "https://jloda.vercel.app",
+            "http://localhost:3000"
+        ],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type"]
     }
 })
+
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({"message": "YouTube Downloader API is running", "status": "active"})
 
 DOWNLOAD_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "downloads")
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
@@ -86,7 +93,7 @@ def download_video():
 def get_ngrok_url():
     try:
         # Get the ngrok tunnel information
-        response = requests.get('https://025d-105-112-231-67.ngrok-free.app')
+        response = requests.get('https://8191-102-89-32-248.ngrok-free.app')
         tunnels = response.json()['tunnels']
         # Find the HTTPS tunnel
         for tunnel in tunnels:
