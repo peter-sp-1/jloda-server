@@ -11,7 +11,7 @@ app = Flask(__name__)
 # Configure CORS to allow requests from any origin pip freeze > requirements.txt
 CORS(app, resources={
     r"/*": {
-        "origins": "*",
+        "origins": ["https://jloda.vercel.app", "http://localhost:3000"],
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type"]
     }
