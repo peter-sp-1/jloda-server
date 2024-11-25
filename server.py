@@ -41,12 +41,16 @@ def download_video():
             return jsonify({'error': 'No URL provided'}), 400
 
         url = data['url']
+        cookies = request.cookies.get('youtube_cookie')  # Example cookie name
         
         ydl_opts = {
             'format': 'best[ext=mp4]',
             'noplaylist': True,
             'geo_bypass': True,
             'geo_bypass_country': 'US',
+            'add_headers': {
+                'Cookie': cookies,  # Pass cookies to yt-dlp
+            },
             'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/91.0.4472.124 Safari/537.36',
             'add_headers': {
                 'Referer': 'https://www.youtube.com',
